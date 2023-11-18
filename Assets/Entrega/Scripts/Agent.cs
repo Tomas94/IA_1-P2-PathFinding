@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class Agent : MonoBehaviour
 {
-    // Start is called before the first frame update
+    FiniteStateMachine _fSM; 
+
+
     void Start()
     {
         

@@ -58,7 +58,7 @@ public class Pathfinding2
     {
         if (start == null) return default;
         //Queue<Node> frontier = new Queue<Node>();
-        var frontier = new PriorityQueue2<Node2>();
+        var frontier = new PriorityQueue<Node2>();
         frontier.Enqueue(start, 0);
         var cameFrom = new Dictionary<Node2, Node2>();
         cameFrom.Add(start, null);
@@ -103,7 +103,7 @@ public class Pathfinding2
 
     public List<Vector3> GreedyBFS(Node2 start, Node2 end)
     {
-        PriorityQueue2<Node2> frontier = new PriorityQueue2<Node2>();
+        PriorityQueue<Node2> frontier = new PriorityQueue<Node2>();
         frontier.Enqueue(start, 0);
         var cameFrom = new Dictionary<Node2, Node2>();
         cameFrom.Add(start, null);
@@ -146,7 +146,7 @@ public class Pathfinding2
     {
         if (start == null) return default;
         //Queue<Node> frontier = new Queue<Node>();
-        var frontier = new PriorityQueue2<Node2>();
+        var frontier = new PriorityQueue<Node2>();
         frontier.Enqueue(start, 0);
         var cameFrom = new Dictionary<Node2, Node2>();
         cameFrom.Add(start, null);
@@ -304,7 +304,7 @@ public class Pathfinding2
     {
         var time = new WaitForSeconds(0.03f);
 
-        var frontier = new PriorityQueue2<Node2>();
+        var frontier = new PriorityQueue<Node2>();
         frontier.Enqueue(start, 0);
         var cameFrom = new Dictionary<Node2, Node2>();
         cameFrom.Add(start, null);
@@ -358,7 +358,7 @@ public class Pathfinding2
     {
         var time = new WaitForSeconds(0.03f);
 
-        var frontier = new PriorityQueue2<Node2>();
+        var frontier = new PriorityQueue<Node2>();
         frontier.Enqueue(start, 0);
         var cameFrom = new Dictionary<Node2, Node2>();
         cameFrom.Add(start, null);
