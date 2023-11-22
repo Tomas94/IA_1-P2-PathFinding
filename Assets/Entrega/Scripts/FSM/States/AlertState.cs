@@ -22,10 +22,16 @@ public class AlertState : State
         var _playerDir = _playerPos - agent.transform.position;
         var _playerAlertDir = agent._gm.alertPosition - agent.transform.position;
 
+        if(agent.pfEndNode != agent._gm.pfEndNode)
+        {
+            agent.pfEndNode = agent._gm.pfEndNode;
+            agent.CreatePath();
+        }
+
         if (agent.InFieldOfView(_playerPos))
         {
             agent.Move(_playerDir);
-            agent._gm.pfEndNode = agent.currentGoingNode;
+            agent._gm.pfEndNode = agent.GetNearest(_playerPos);
             agent._gm.alertPosition = _playerPos;
             agent._pathToFollow?.Clear();
 
@@ -49,6 +55,7 @@ public class AlertState : State
             agent.TravelThroughPath();
             return;
         }
+        Transitions();
     }
 
     public override void OnExit()

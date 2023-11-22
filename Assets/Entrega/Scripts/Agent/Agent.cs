@@ -36,7 +36,7 @@ public class Agent : MonoBehaviour
 
     void Update()
     {
-        _fsm.Update();    
+        _fsm.Update();
     }
 
     public bool InFieldOfView(Vector3 target)
@@ -66,6 +66,23 @@ public class Agent : MonoBehaviour
         _fsm.ChangeState(AgentStates.Patrol);
     }
 
+    public Node GetNearest(Vector3 target)
+    {
+        Node nearest = null;
+        foreach (Node _node in GameManager.Instance._allNodes)
+        {
+            if (nearest == null)
+            {
+                nearest = _node;
+                continue;
+            }
+
+            if (Vector3.Distance(_node.transform.position, target) < Vector3.Distance(nearest.transform.position, target)) nearest = _node;
+            
+        }
+        //Debug.Log("El mas cercano es " + nearest);
+        return nearest;
+    }
 
     #region Patrol State
 
@@ -138,7 +155,7 @@ public class Agent : MonoBehaviour
 
         Gizmos.DrawLine(transform.position, transform.position + dirA.normalized * _viewRadius);
         Gizmos.DrawLine(transform.position, transform.position + dirB.normalized * _viewRadius);
-       }
+    }
     Vector3 GetDirFromAngle(float angleInDegrees)
     {
         float angle = angleInDegrees + transform.eulerAngles.z;

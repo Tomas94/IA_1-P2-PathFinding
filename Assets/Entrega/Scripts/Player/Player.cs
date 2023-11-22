@@ -8,9 +8,11 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-        _dirX = Input.GetAxisRaw("Horizontal") * _speed * Time.deltaTime;
-        _dirY = Input.GetAxisRaw("Vertical") * _speed * Time.deltaTime;
-        _dir = new Vector3(_dirX, _dirY, 0);
+        _dirX = Input.GetAxisRaw("Horizontal");
+        _dirY = Input.GetAxisRaw("Vertical");
+        _dir = new Vector3(_dirX,_dirY, 0);
+        _dir.Normalize();
+        _dir *= _speed * Time.deltaTime;
         transform.position += _dir;
         transform.right = _dir;
     }
