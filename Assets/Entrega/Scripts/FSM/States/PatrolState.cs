@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PatrolState : State
@@ -14,26 +11,45 @@ public class PatrolState : State
 
     public override void OnEnter()
     {
-        //agent._renderer.material.color = Color.green;
-        //agent._currentState = AgentStates.Patrol;
+        agent._currentState = AgentStates.Patrol;
     }
 
     public override void OnUpdate()
     {
-        //agent.Patrol();
-        //agent.CheckForBoidInRange();
-        //agent._currentStamina -= Time.deltaTime;
-        //Transitions();
+        Transitions();
+
+        var _playerPos = agent._gm.player.transform.position;
+        var _currenNodePos = agent.currentGoingNode.GetPosition();
+        var _nodeDir = _currenNodePos - agent.transform.position;
+
+        if (agent.InFieldOfView(_playerPos))
+        {
+            agent._gm.pfEndNode = agent.currentGoingNode;
+            agent._gm.alertPosition = _playerPos;
+            agent._gm.playerDetected = true;
+            return;
+        }
+
+        if (!agent.InLineOfSight(_nodeDir) || agent._pathToFollow.Count > 0)
+        {
+            if (agent._pathToFollow.Count == 0) agent.CreatePath(agent.lastVisitNode, agent.currentGoingNode);
+            agent.TravelThroughPath();
+            return;
+        }
+
+        if (agent._pathToFollow.Count == 0 )
+        {
+            agent.Patrol(agent.GetNodePosition());
+            return;
+        }
     }
 
     public override void OnExit()
     {
-        //throw new System.NotImplementedException();
-    }
 
+    }
     public override void Transitions()
     {
-        //if (agent._currentStamina <= 0) fsm.ChangeState(AgentStates.Rest);
-        //if (agent._target != null) fsm.ChangeState(AgentStates.Chase);
+        if (agent._gm.playerDetected) fsm.ChangeState(AgentStates.Alert);
     }
 }
