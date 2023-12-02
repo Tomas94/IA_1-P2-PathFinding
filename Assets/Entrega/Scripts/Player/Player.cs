@@ -14,6 +14,7 @@ public class Player : MonoBehaviour
         _dir.Normalize();
         _dir *= _speed * Time.deltaTime;
         transform.position += _dir;
+        if(_dir==Vector3.zero) return;
         transform.right = _dir;
     }
 

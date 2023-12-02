@@ -13,10 +13,10 @@ public class Agent : MonoBehaviour
     AStarPf _pf;
     public List<Vector3> _pathToFollow;
 
-    public Node lastVisitNode;
-    public Node currentGoingNode;
-    public Node pfStartNode;
-    public Node pfEndNode;
+    public Node lastVisitNode;       //Ultimo nodo visitado
+    public Node currentGoingNode;    //Nodo al que se esta yendo
+    public Node pfStartNode;         //Nodo Inicial para Pf
+    public Node pfEndNode;           //Nodo Final para Pf
 
     [SerializeField] float _speed;
     [SerializeField] float _stopDistance;
@@ -66,6 +66,7 @@ public class Agent : MonoBehaviour
         _fsm.ChangeState(AgentStates.Patrol);
     }
 
+    //Devuelve el Nodo màs cercano a una posiciòn.
     public Node GetNearest(Vector3 target)
     {
         Node nearest = null;
@@ -86,6 +87,7 @@ public class Agent : MonoBehaviour
 
     #region Patrol State
 
+    //Patrulla hacie la posicion que se le pasa. Tal vez podria ser reemplazado por Move()
     public void Patrol(Vector3 nodePos)
     {
         var dir = nodePos - transform.position;
@@ -94,6 +96,7 @@ public class Agent : MonoBehaviour
         transform.position = destiny;
     }
 
+    //Devuelve la posicion de un nodo
     public Vector3 GetNodePosition()
     {
         if (currentGoingNode == null) return default;
@@ -107,6 +110,7 @@ public class Agent : MonoBehaviour
         return currentGoingNode.transform.position;
     }
 
+    //Devuleve la posicion del proximo nodo em un array de Nodos.
     Node GetNextWaypoint(Node[] waypointsArray)
     {
         if (_patrolIndex == waypointsArray.Length - 1) _patrolIndex = 0;
@@ -119,6 +123,7 @@ public class Agent : MonoBehaviour
 
     #region Pathfinding State
 
+    //Recorre el path creado
     public void TravelThroughPath()
     {
         if (_pathToFollow == null || _pathToFollow.Count == 0) return;
@@ -134,11 +139,13 @@ public class Agent : MonoBehaviour
         transform.position = pos;
     }
 
+    //Crea el path a seguir con A*
     public void CreatePath()
     {
         _pathToFollow = _pf.AStar(pfStartNode, pfEndNode);
     }
 
+    //Crea el path a seguir con A* con parametros pasados
     public void CreatePath(Node _start, Node _end)
     {
         _pathToFollow = _pf.AStar(_start, _end);
@@ -149,10 +156,12 @@ public class Agent : MonoBehaviour
     #region Gizmos
     void OnDrawGizmos()
     {
+        Gizmos.color = Color.blue;
         Gizmos.DrawWireSphere(transform.position, _viewRadius);
         Vector3 dirA = GetDirFromAngle(_viewAngle / 2);
         Vector3 dirB = GetDirFromAngle(-_viewAngle / 2);
 
+        Gizmos.color = Color.red;
         Gizmos.DrawLine(transform.position, transform.position + dirA.normalized * _viewRadius);
         Gizmos.DrawLine(transform.position, transform.position + dirB.normalized * _viewRadius);
     }

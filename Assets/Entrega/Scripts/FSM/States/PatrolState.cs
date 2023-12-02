@@ -22,6 +22,7 @@ public class PatrolState : State
         var _currenNodePos = agent.currentGoingNode.GetPosition();
         var _nodeDir = _currenNodePos - agent.transform.position;
 
+        //Si ve al player, activa el bool que indica que el player fue encontrado y asi se avisa a los demas.
         if (agent.InFieldOfView(_playerPos))
         {
             agent._gm.pfEndNode = agent.currentGoingNode;
@@ -30,6 +31,7 @@ public class PatrolState : State
             return;
         }
 
+        //Si el proximo nodo no esta a la vista o el path tiene elemtos, recorre el path con A*
         if (!agent.InLineOfSight(_nodeDir) || agent._pathToFollow.Count > 0)
         {
             if (agent._pathToFollow.Count == 0) agent.CreatePath(agent.lastVisitNode, agent.currentGoingNode);
@@ -37,6 +39,7 @@ public class PatrolState : State
             return;
         }
 
+        //Si path esta vacio, patrulla hacia el nodo.
         if (agent._pathToFollow.Count == 0 )
         {
             agent.Patrol(agent.GetNodePosition());
